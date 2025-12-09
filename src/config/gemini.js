@@ -1,36 +1,33 @@
-// const apiKey = "AIzaSyDG3v91MQhkIeHC7fpJzR_6B00Ug9ihWHA";
 
-import {
-    GoogleGenerativeAI,
-    HarmCategory,
-    HarmBlockThreshold,
-  } from "@google/generative-ai";
-  
-  const apiKey = "AIzaSyDG3v91MQhkIeHC7fpJzR_6B00Ug9ihWHA";
-  const genAI = new GoogleGenerativeAI(apiKey);
-  
-  const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
-  });
-  
-  const generationConfig = {
-    temperature: 1,
-    topP: 0.95,
-    topK: 40,
-    maxOutputTokens: 8192,
-    responseMimeType: "text/plain",
-  };
-  
-  async function run(prompt) {
-    const chatSession = model.startChat({
-      generationConfig,
-      history: [
-      ],
+
+import { GoogleGenAI } from "@google/genai";
+
+// Load API Key from .env
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+
+// Create AI client
+const ai = new GoogleGenAI({ apiKey });
+
+// Model selection (new stable version)
+const modelName = "gemini-2.5-flash";
+
+async function run(prompt) {
+  try {
+    const result = await ai.models.generateContent({
+      model: modelName,
+      contents: prompt,
     });
-  
-    const result = await chatSession.sendMessage(prompt);
-    console.log(result.response.text());
-    return result.response.text();
+
+    // result.text is now a FUNCTION, not a string
+    const output = result.candidates[0].content.parts[0].text;
+
+
+    return output;
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    throw error;
   }
-  
-  export default run;
+}
+
+export default run;

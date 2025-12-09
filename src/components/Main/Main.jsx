@@ -16,6 +16,25 @@ export const Main = () => {
     handleKeyDown,
   } = useContext(Context);
 
+  const cardsData = [
+    {
+      title: "Suggest beautiful places to see on an upcoming road trip",
+      icon: "map",
+    },
+    {
+      title: "Briefly summarize this concept: urban planning",
+      icon: "info",
+    },
+    {
+      title: "Brainstorm team bonding activities for our work retreat",
+      icon: "chat",
+    },
+    {
+      title: "Tell me about React js and React native",
+      icon: "code",
+    },
+  ];
+
   return (
     <div className="main">
       <div className="nav">
@@ -35,22 +54,16 @@ export const Main = () => {
               <p>How can I help you today?</p>
             </div>
             <div className="cards">
-              <div className="card">
-                <p>Suggest beautiful places to see on an upcoming road trip</p>
-                <span className="material-icons-outlined">map</span>
-              </div>
-              <div className="card">
-                <p>Briefly summarize this concept: urban planning</p>
-                <span className="material-icons-outlined">info</span>
-              </div>
-              <div className="card">
-                <p>Brainstorm team bonding activities for our work retreat</p>
-                <span className="material-icons-outlined">chat</span>
-              </div>
-              <div className="card">
-                <p>Tell me about React js and React native</p>
-                <span className="material-icons-outlined">code</span>
-              </div>
+              {cardsData.map((item, index) => (
+                <div
+                  className="card"
+                  key={index}
+                  onClick={() => setInput(item.title)}
+                >
+                  <p>{item.title}</p>
+                  <span className="material-icons-outlined">{item.icon}</span>
+                </div>
+              ))}
             </div>
           </>
         ) : (
